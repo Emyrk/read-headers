@@ -4,10 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
 func dump(w http.ResponseWriter, req *http.Request) {
+	log.Println("request received")
 	_, _ = fmt.Fprintf(w, "HTTP Request\n")
 	_, _ = fmt.Fprintf(w, "URL: %s\n", req.URL.String())
 	_, _ = fmt.Fprintf(w, "-- Headers --\n")
@@ -28,5 +30,8 @@ func main() {
 	flag.Parse()
 
 	http.HandleFunc("/", dump)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", *port), nil)
+	if err != nil {
+		panic(err)
+	}
 }
