@@ -30,7 +30,9 @@ func main() {
 	flag.Parse()
 
 	http.HandleFunc("/", dump)
-	err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", *port), nil)
+	l := fmt.Sprintf("0.0.0.0:%d", *port)
+	log.Println("Listening on", l)
+	err := http.ListenAndServe(l, nil)
 	if err != nil {
 		panic(err)
 	}
